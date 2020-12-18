@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-3">
+      <div class="card" style="width: 18rem;">
+        <img src="{{ customer.profile_pic_url|default_if_none:'#' }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ customer.name }}</h5>
+          <p class="card-description">Phone: {{ customer.phone }}<br/>Email: {{ customer.email }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-5">
+      <form action="" method="POST" class="border p-5 rounded" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Save</button>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

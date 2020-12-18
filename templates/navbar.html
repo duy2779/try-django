@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Try Django</a>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'products:products' %}">Products</a>
+          </li>
+          
+          {% if not request.user.is_anonymous %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'customers:profile-view' %}">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'customers:orders-view' %}">Orders</a>
+            </li>
+          {% endif %}
+            
+        </ul>
+        <span class="navbar-text">
+          {% if request.user.is_anonymous %}
+            <a class="text-decoration-none ms-3" href="{% url 'accounts:login' %}">Login</a>
+          {% else %}
+            Hello, {{ request.user }}
+            <a class="text-decoration-none ms-3" href="{% url 'accounts:logout' %}">Logout</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </nav>
