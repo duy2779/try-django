@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+ {% block content %}
+    <table class="table table-bordered">
+        <thread>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for item in cartItems %}
+                <tr>
+                    <td>{{ item.product.title }}</td>
+                    <td>{{ item.product.price }}</td>
+                    <td><input data-product="{{ item.product.id }}" class="quantity-input" type="number" min="0" max="100" value="{{ item.quantity }}"></td>
+                    <td>{{ item.get_total }}</td>
+                </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+    <div class="text-end">
+        <span class="fw-bold">Amount:{{ amount }}</span>
+    </div>
+
+    <script type="text/javascript">
+        let inputQuantity = document.getElementsByClassName('quantity-input');
+        for(let input of inputQuantity){
+            let currentQuantity = parseInt(input.value);
+            input.onchange = () => {
+                productId = input.dataset.product;
+                if(parseInt(input.value) < currentQuantity){
+                    updateOrderUser(productId,'remove')
+                }else{
+                    updateOrderUser(productId,'add')
+                }
+            }
+        }
+
+        function updateOrderUser(productId, action) {
+            console.log(user, 'sending data...')
+            console.log(productId, action)
+
+            let url = '/order/update/'
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({ 'productId': productId, 'action': action })
+            })
+
+                .then((response) => {
+                    return response.json()
+                })
+
+                .then((data) => {
+                    console.log('data:'+data)
+                    location.reload()
+                })
+        }
+    </script>
+
+ {% endblock %}

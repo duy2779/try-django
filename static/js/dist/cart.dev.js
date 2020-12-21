@@ -16,7 +16,7 @@ try {
       if (user === "AnonymousUser") {
         console.log('Not Logged');
       } else {
-        console.log(user, 'sending data...');
+        updateOrderUser(productId, action);
       }
     });
   };
@@ -37,4 +37,25 @@ try {
       throw _iteratorError;
     }
   }
+}
+
+function updateOrderUser(productId, action) {
+  console.log(user, 'sending data...');
+  var url = '/order/update/';
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify({
+      'productId': productId,
+      'action': action
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    console.log('data:' + data);
+    location.reload();
+  });
 }

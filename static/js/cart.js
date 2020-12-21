@@ -8,9 +8,33 @@ for (let button of addToCartButtons) {
         console.log('productId:' + productId, 'action:' + action)
         if (user === "AnonymousUser") {
             console.log('Not Logged')
-        }else{
-            console.log(user, 'sending data...')
+        } else {
+            updateOrderUser(productId, action)
         }
     })
 
+}
+
+function updateOrderUser(productId, action) {
+    console.log(user, 'sending data...')
+
+    let url = '/order/update/'
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({ 'productId': productId, 'action': action })
+    })
+
+        .then((response) => {
+            return response.json()
+        })
+
+        .then((data) => {
+            console.log('data:'+data)
+            location.reload()
+        })
 }
